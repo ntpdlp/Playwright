@@ -51,13 +51,15 @@ test('UI Control', async ({ context }) => {
         page.locator(documentSel).click(),
     ]);
     
+    //await page.pause();
     // on 2nd page: get the text 
     const headingText = await newPage.getByRole('heading',{name:'Documents request'}).textContent();
-    console.log(headingText);
+    console.log("Heading :: " + headingText);
 
 
 
-
+    //back to page1 to re-enter username
+    await page.getByLabel('Username').fill("can you see me?");
     await page.pause();
     await page.getByRole('button',{value:"Sign In"}).click();
 
