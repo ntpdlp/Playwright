@@ -8,7 +8,7 @@ import { test , expect} from '@playwright/test';
 //selector
 const usernameSel ='#username';
 const passwordSel ='#password';
-const documentSel ='a[href*="documents-request"]';
+const documentSel ='a[href*="documents-requestABCXYZ"]';
 
 
 //testData
