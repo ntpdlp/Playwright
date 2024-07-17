@@ -5,63 +5,74 @@
 
 import { test , expect} from '@playwright/test';
 
-//selector
-const usernameSel ='#username';
-const passwordSel ='#password';
-const documentSel ='a[href*="documents-requestABCXYZ"]';
-
 
 //testData
-const url = 'https://rahulshettyacademy.com/loginpagePractise/';
-const username='rahulshettyacademy';
-const password='learning';
+const url = 'https://rahulshettyacademy.com/client/';
+const username='ntpdlp@gmail.com';
+const password='Test@123';
 
-test('UI Control', async ({ context }) => {
-    const page = await context.newPage();
+//selector
+const productCartSel = '.card-body';
+const product = 'IPHONE 13 PRO';
+
+test('UI Control', async ({ page }) => {
     await page.goto(url);
 
-    //enter username
-    await page.getByLabel('Username').fill(username);
+    //login
+    await page.locator('#userEmail').fill(username);
+    await page.locator('#userPassword').fill(password);
+    await page.getByRole('button',{id:'login'}).click();
 
-    //enter password
-    await page.getByLabel('Password').fill(password);
+    //changing page
+    await page.waitForLoadState('networkidle');
 
-    //select dropdown: Teacher
-    await page.locator('select.form-control').selectOption({label:'Teacher'});
+    //find dynamic product
+    const tiles = await page.locator(".card-body b").allTextContents();
+    console.log(tiles);
+    const products = page.locator(productCartSel);
+    const productCount = await products.count();
 
-    //radio button: User option
-    await page.getByLabel('User', {exact:true}).click();
+   
+    //add to cart
+    for(let i=0;i<productCount; i++){
+        const productName = await products.nth(i).locator('b').textContent();
+        if(productName === product) {
+            console.log(i);
+            console.log(productName);
+           // await products.nth(i).locator('.fa.fa-shopping-cart').click();
+           await products.nth(i).locator('text= Add To Cart').click();
+        }
+        
+    }
 
-    //click OK button on alert when changing to User option
-    await page.locator('#okayBtn').click();
+    //click on 'Cart'
+    await page.locator('button[routerlink*="cart"]').click();
+
+    //check on My Cart
+    const cartSectionCount = await page.locator('.cartSection').count();
+    for(let i=0; i<cartSectionCount; i++){
+        const cartSelectionProd = await page.locator('.cartSection').nth(i).locator('h3').textContent();
+        if(cartSelectionProd === product){
+            const itemNumber = await page.locator('.cartSection').nth(i).locator('.itemNumber').textContent();
+            console.log(itemNumber);
+        }
+    }
+
+    //check out
+    await page.getByRole('button',{name: 'Checkout'}).click();
+
+
+    //place order -- shipping information
+    await page.getByPlaceholder('Select Country').fill('Viet');
+    await page.locator('section.ta-results button').click(); //click on Vietnam dropdown list
+    await page.locator('//a[contains(text(),"Place Order")]').click(); //xpath
     
-    //VALIDATE: 2 ways, the same purpose
-    await expect(page.getByLabel('User', {exact:true})).toBeChecked; //await for action toBeChecked()
-    expect (await page.getByLabel('User', {exact:true}).isChecked()).toBeTruthy(); ////await for action isChecked()
+    //thank you for the order
+    expect(await page.locator('//h1[contains(text(),"Thankyou for the order.")]').isVisible).toBeTruthy();
 
-    //turn on Term
-    await page.locator('.text-white.termsText').click();
-
-    //click on blinking link to open 2nd window
-    await expect(page.locator(documentSel)).toHaveAttribute('class','blinkingText');
-
-    //need to listen event (page) before clicking on link
-    const [newPage] = await Promise.all([
-        context.waitForEvent('page'),
-        page.locator(documentSel).click(),
-    ]);
-    
-    //await page.pause();
-    // on 2nd page: get the text 
-    const headingText = await newPage.getByRole('heading',{name:'Documents request'}).textContent();
-    console.log("Heading :: " + headingText);
-
-
-
-    //back to page1 to re-enter username
-    await page.getByLabel('Username').fill("can you see me?");
     await page.pause();
-    await page.getByRole('button',{value:"Sign In"}).click();
+    //orders history page
 
-    //await page.locator('#abc').click();
+
+ 
 });
