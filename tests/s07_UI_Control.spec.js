@@ -53,8 +53,10 @@ test('UI Control', async ({ page }) => {
     for(let i=0; i<cartSectionCount; i++){
         const cartSelectionProd = await page.locator('.cartSection').nth(i).locator('h3').textContent();
         if(cartSelectionProd === product){
+            //Playwright augments Standard-CSS Selectors in 2 ways: standard DOM , pseudo-classes like :has-text(),:visible(), ...
             const itemNumber = await page.locator('.cartSection').nth(i).locator('.itemNumber').textContent();
             console.log(itemNumber);
+            break;
         }
     }
 
@@ -63,16 +65,27 @@ test('UI Control', async ({ page }) => {
 
 
     //place order -- shipping information
-    await page.getByPlaceholder('Select Country').fill('Viet');
-    await page.locator('section.ta-results button').click(); //click on Vietnam dropdown list
+    await page.getByPlaceholder('Select Country').pressSequentially('Vietnam');
+    await page.locator('section.ta-results')
+            .filter({haxText:'Vietnam'})
+            .click();
     await page.locator('//a[contains(text(),"Place Order")]').click(); //xpath
     
     //thank you for the order
-    expect(await page.locator('//h1[contains(text(),"Thankyou for the order.")]').isVisible).toBeTruthy();
+    await page.locator('.hero-primary').waitFor();
+    await expect(page.locator('.hero-primary')).toHaveText("Thankyou for the order.");
 
-    await page.pause();
-    //orders history page
+    const orderId = await page.locator('.em-spacer-1 .ng-star-inserted').textContent();
+    console.log(orderId);
+    const sampleTrim = orderId.split("|");
+    const pureOrderId = sampleTrim.at(1).trim();
 
+    //VP: check Order in orderlist
+    await page.locator('button[routerlink="/dashboard/myorders"]').click();
+    expect(await page.locator('table')
+            .filter({has: page.locator('tbody')})
+            .filter({has: page.locator('th')})
+            .filter({hasText:pureOrderId})).toBeTruthy();
 
  
 });
