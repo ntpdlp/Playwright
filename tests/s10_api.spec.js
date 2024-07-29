@@ -3,28 +3,46 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  */
 
-import { test , expect} from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
 
 
 //testData
 const url = 'https://rahulshettyacademy.com/client/';
-const username='ntpdlp@gmail.com';
-const password='Test@123';
+const username = 'ntpdlp@gmail.com';
+const password = 'Test@123';
+let token;
 
-//selector
-const productCartSel = '.card-body';
-const product = 'IPHONE 13 PRO';
+test.beforeAll( async () => {
+    const apiContext = await request.newContext();
+    const apiResponse = await apiContext.post('https://rahulshettyacademy.com/api/ecom/auth/login',{
+        data: {
+            userEmail: 'ntpdlp@gmail.com',
+            userPassword: 'Test@123',
+        }
+    });
+
+    const apiResponseJson = await apiResponse.json();
+    token = apiResponseJson.token
+    console.log(token);
+});
+
+ 
+
 
 test('UI Control', async ({ page }) => {
+    //selector
+    const productCartSel = '.card-body';
+    const product = 'IPHONE 13 PRO';
+
+
+    //assign api authentication token to skip login
+    await page.addInitScript(value => {
+        window.localStorage.setItem('token',value);
+    },token);
+   
+
+    //** go to home page directly with token sent => skip login steps
     await page.goto(url);
-
-    //login
-    await page.locator('#userEmail').fill(username);
-    await page.locator('#userPassword').fill(password);
-    await page.getByRole('button',{id:'login'}).click();
-
-    //changing page
-    await page.waitForLoadState('networkidle');
 
     //find dynamic product
     const tiles = await page.locator(".card-body b").allTextContents();
@@ -32,17 +50,17 @@ test('UI Control', async ({ page }) => {
     const products = page.locator(productCartSel);
     const productCount = await products.count();
 
-   
+
     //add to cart
-    for(let i=0;i<productCount; i++){
+    for (let i = 0; i < productCount; i++) {
         const productName = await products.nth(i).locator('b').textContent();
-        if(productName === product) {
+        if (productName === product) {
             console.log(i);
             console.log(productName);
-           // await products.nth(i).locator('.fa.fa-shopping-cart').click();
-           await products.nth(i).locator('text= Add To Cart').click();
+            // await products.nth(i).locator('.fa.fa-shopping-cart').click();
+            await products.nth(i).locator('text= Add To Cart').click();
         }
-        
+
     }
 
     //click on 'Cart'
@@ -50,9 +68,9 @@ test('UI Control', async ({ page }) => {
 
     //check on My Cart
     const cartSectionCount = await page.locator('.cartSection').count();
-    for(let i=0; i<cartSectionCount; i++){
+    for (let i = 0; i < cartSectionCount; i++) {
         const cartSelectionProd = await page.locator('.cartSection').nth(i).locator('h3').textContent();
-        if(cartSelectionProd === product){
+        if (cartSelectionProd === product) {
             //Playwright augments Standard-CSS Selectors in 2 ways: standard DOM , pseudo-classes like :has-text(),:visible(), ...
             const itemNumber = await page.locator('.cartSection').nth(i).locator('.itemNumber').textContent();
             console.log(itemNumber);
@@ -61,16 +79,16 @@ test('UI Control', async ({ page }) => {
     }
 
     //check out
-    await page.getByRole('button',{name: 'Checkout'}).click();
+    await page.getByRole('button', { name: 'Checkout' }).click();
 
 
     //place order -- shipping information
     await page.getByPlaceholder('Select Country').pressSequentially('Vietnam');
     await page.locator('section.ta-results')
-            .filter({haxText:'Vietnam'})
-            .click();
+        .filter({ haxText: 'Vietnam' })
+        .click();
     await page.locator('//a[contains(text(),"Place Order")]').click(); //xpath
-    
+
     //thank you for the order
     await page.locator('.hero-primary').waitFor();
     await expect(page.locator('.hero-primary')).toHaveText("Thankyou for the order.");
@@ -83,9 +101,9 @@ test('UI Control', async ({ page }) => {
     //VP: check Order in orderlist
     await page.locator('button[routerlink="/dashboard/myorders"]').click();
     expect(await page.locator('table')
-            .filter({has: page.locator('tbody')})
-            .filter({has: page.locator('th')})
-            .filter({hasText:pureOrderId})).toBeTruthy();
+        .filter({ has: page.locator('tbody') })
+        .filter({ has: page.locator('th') })
+        .filter({ hasText: pureOrderId })).toBeTruthy();
 
- 
+
 });
