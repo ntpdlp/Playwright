@@ -5,7 +5,7 @@ exports.PlaywrightDevPage = class PlaywrightDevPage{
     constructor(page){
         this.page = page;
         this.getStartedLink = page.getByRole('link',{name:'Get started'});
-        this.gettingStartedHeader = page.getByRole('h1',{name:'Installation'});
+        this.gettingStartedHeader = page.locator('h1',{hasText:'Installation'});
         this.pomLink = page.locator('li',{hasText:'Guides'})
                             .locator('a',{hasText:'Page Object Model'});
        
@@ -17,6 +17,7 @@ exports.PlaywrightDevPage = class PlaywrightDevPage{
 
     async getStarted(){
         await this.getStartedLink.first().click();
+        await this.page.waitForLoadState('networkidle');
         await expect(this.gettingStartedHeader).toBeVisible();
     }
 
