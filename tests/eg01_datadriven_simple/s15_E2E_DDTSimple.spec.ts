@@ -3,18 +3,20 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  */
 
-import {test} from './my-test.js';
+import {test} from './my-test';
 import { expect} from '@playwright/test';
+const testdata = JSON.parse(JSON.stringify(require('../../utils/eg01_testdata.json')));
 
 
 
 
-//testData
-const url = 'https://rahulshettyacademy.com/client/';
-const username='ntpdlp@gmail.com';
-const password='Test@123';
+//testData from JSON object
+const username=testdata.username;
+const password=testdata.password;
+let product = testdata.product;
 
-let product = 'IPHONE 13 PRO';
+//const
+const url = "https://rahulshettyacademy.com/client/";
 
 test('UI Control', async ({loginPage, productPage,cartPage,shippingPage,thankyouPage}) => {
     /*
@@ -25,6 +27,7 @@ test('UI Control', async ({loginPage, productPage,cartPage,shippingPage,thankyou
         const  = new ThankyouPage(page);
     */
 
+        
     //login page
     await loginPage.goto(url);
     await loginPage.login(username,password);

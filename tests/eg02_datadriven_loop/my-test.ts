@@ -4,6 +4,7 @@ import {ProductPage} from './ProductPage';
 import {CartPage} from './CartPage';
 import {ShippingPage} from './ShippingPage';
 import {ThankyouPage} from './ThankyouPage';
+import { MenuTop } from './MenuTop';
 
 
 export const test = baseTest.extend<{
@@ -12,6 +13,7 @@ export const test = baseTest.extend<{
     cartPage: CartPage;
     shippingPage: ShippingPage;
     thankyouPage: ThankyouPage;
+    menuTop: MenuTop;
 }>({
     loginPage: async({page},use) => {
         await use(new LoginPage(page));
@@ -27,5 +29,8 @@ export const test = baseTest.extend<{
     },
     thankyouPage:async ({page},use) => {
         await use(new ThankyouPage(page));
+    },
+    menuTop: async({page},use) => {
+        await use(new MenuTop(page));
     },
 });

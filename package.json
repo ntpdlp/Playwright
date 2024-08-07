@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test01":"npx playwright test ./tests/eg01_datadriven_simple/s15_E2E_DDTSimple.spec.ts --project chromium",
+    "test02":"npx playwright test ./tests/eg02_datadriven_loop/s15_E2E_DDT_Loop.spec.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
