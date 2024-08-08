@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test01":"npx playwright test ./tests/eg01_datadriven_simple/s16_E2E_PrjConfig.spec.ts --project chromium",
-    "test02":"npx playwright test ./tests/eg01_datadriven_simple/s16_E2E_PrjConfig.spec.ts --project webkit",
-    "test03":"npx playwright test ./tests/eg01_datadriven_simple/s16_E2E_PrjConfig.spec.ts --project iPhone12Pro",
-    "test10":"npx playwright test ./tests/eg01_datadriven_simple/s16_E2E_PrjConfig.spec.ts --config playwright.configwebkit.js"
+    "test20_quick":"npx playwright test --project chromium --grep @quick",
+    "test20_regression":"npx playwright test --project chromium --grep @regression"
   
   },
   "keywords": [],

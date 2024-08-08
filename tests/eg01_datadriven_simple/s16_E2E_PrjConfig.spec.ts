@@ -18,7 +18,7 @@ let product = testdata.product;
 //const
 const url = "https://rahulshettyacademy.com/client/";
 
-test('UI Control', async ({loginPage, productPage,cartPage,shippingPage,thankyouPage}) => {
+test('UI Control',{tag:'@regression'}, async ({loginPage, productPage,cartPage,shippingPage,thankyouPage}) => {
     /*
         //declare pages
         const  = new ProductPage(page);
@@ -50,4 +50,9 @@ test('UI Control', async ({loginPage, productPage,cartPage,shippingPage,thankyou
     await thankyouPage.verifyOrderDisplay();
 
  
+});
+
+
+test('Smoke check',{tag:'@quick'},async({page})=>{
+    page.goto('https://playwright.dev/docs/test-annotations#tag-tests');
 });
