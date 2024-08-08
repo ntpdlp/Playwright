@@ -3,9 +3,9 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  */
 
-import {test} from './my-test';
+import {test} from './base-test';
 import { expect} from '@playwright/test';
-const testdata = JSON.parse(JSON.stringify(require('../../utils/eg01_testdata.json')));
+const testdata = JSON.parse(JSON.stringify(require('../../testdata/eg01_testdata.json')));
 
 
 

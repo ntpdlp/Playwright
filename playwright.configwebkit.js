@@ -30,32 +30,13 @@ module.exports = defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
     screenshot: 'on',
-    video:'on',
-    launchOption:{
-      args: ['--disable-web-security',
-              '--allow-running-insecure-content',
-              '--ignore-https-errors',
-              '--disable-popup-blocking',
-              '--start-maximized'],
-      slowMo: 0
-    },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'],headless:false},
-
-    },
-    {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'],headless:true },
-    },
-    {
-      name: 'iPhone12Pro',
-      use: { ...devices['iPhone 12 Pro'],headless:false },
-      
+      use: { ...devices['Desktop Safari'],headless: true },
     },
 
 
