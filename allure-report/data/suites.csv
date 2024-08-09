@@ -1,0 +1,7 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Aug 08 15:38:27 PDT 2024","Thu Aug 08 15:38:29 PDT 2024","1670","chromium","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","has title",""
+"passed","Thu Aug 08 15:38:30 PDT 2024","Thu Aug 08 15:38:31 PDT 2024","922","iPhone12Pro","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","get started link",""
+"passed","Thu Aug 08 15:38:30 PDT 2024","Thu Aug 08 15:38:31 PDT 2024","801","iPhone12Pro","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","has title",""
+"passed","Thu Aug 08 15:38:27 PDT 2024","Thu Aug 08 15:38:29 PDT 2024","1791","webkit","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","has title",""
+"passed","Thu Aug 08 15:38:27 PDT 2024","Thu Aug 08 15:38:29 PDT 2024","1811","chromium","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","get started link",""
+"passed","Thu Aug 08 15:38:27 PDT 2024","Thu Aug 08 15:38:29 PDT 2024","1873","webkit","eg01_datadriven_simple/s17_E2E_PrjConfig.spec.ts","","","","get started link",""
