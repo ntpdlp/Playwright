@@ -1,4 +1,4 @@
-How to start Allure Playwright
+HOW TO GENEREATE ALLURE REPORTS
 
 1. install third party report tool
     #npm install -D allure-playwright
@@ -12,3 +12,10 @@ How to start Allure Playwright
 
 4. open the allure-report
     #allure open ./allure-report
+
+========================
+To install Typescript Compiler: #npm install -D typescript
+To check Typescript Compiler version: #npx tsc -v //npx is stand for NPM Package eXcuted , it is simply to execute an npm package
+To complie TS to JS then execute the JS file:
+    #npx tsc demo.ts   //output will be 'demo.js'
+    #node demo.js
